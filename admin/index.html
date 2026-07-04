@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت | PIRO</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --burgundy: #8B2635;
+  --burgundy-dark: #6E1D29;
+  --ink: #1A1A1A;
+  --bg-warm: #F0EBE4;
+  --border: #E8E0D8;
+  --text-muted: #888;
+  --sidebar-w: 320px;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: #F7F4F0;
+  color: var(--ink);
+  height: 100vh;
+  overflow: hidden;
+  direction: rtl;
+}
+
+/* ── Login screen ── */
+#loginScreen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #F7F4F0;
+  z-index: 100;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 360px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-logo { font-family: 'Jost', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: 0.12em; color: var(--burgundy); margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+
+.login-card input {
+  width: 100%; border: 1px solid var(--border); border-radius: 8px;
+  padding: 11px 14px; font-size: 14px; font-family: inherit;
+  outline: none; margin-bottom: 12px; transition: border-color 0.15s;
+  direction: ltr; text-align: left;
+}
+.login-card input:focus { border-color: var(--burgundy); }
+
+.btn-primary {
+  width: 100%; background: var(--burgundy); color: #fff;
+  border: none; border-radius: 8px; padding: 12px; font-size: 14px;
+  font-family: inherit; cursor: pointer; font-weight: 500;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--burgundy-dark); }
+.btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+.login-err { color: #c0392b; font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+/* ── App shell ── */
+#app { display: none; height: 100vh; flex-direction: column; }
+#app.ready { display: flex; }
+
+/* Header */
+.app-header {
+  background: var(--burgundy); color: #fff;
+  padding: 0 24px; height: 56px;
+  display: flex; align-items: center; gap: 16px;
+  flex-shrink: 0;
+}
+.app-logo { font-family: 'Jost', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 0.1em; }
+.app-header-title { font-size: 14px; opacity: 0.85; }
+.app-header-spacer { flex: 1; }
+.btn-logout {
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  border-radius: 8px; padding: 7px 14px; font-size: 13px;
+  font-family: inherit; cursor: pointer; transition: background 0.15s;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.25); }
+
+/* Stats bar */
+.stats-bar {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; gap: 32px; flex-shrink: 0;
+}
+.stat { text-align: center; }
+.stat-num { font-size: 22px; font-weight: 700; color: var(--burgundy); font-family: 'Jost', sans-serif; }
+.stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* Main layout */
+.app-body { display: flex; flex: 1; overflow: hidden; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w); background: #fff;
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-filters {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+  background: transparent; font-size: 12px; font-family: inherit;
+  cursor: pointer; transition: all 0.15s; color: var(--ink);
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--burgundy); color: #fff; border-color: var(--burgundy);
+}
+
+.sidebar-list { flex: 1; overflow-y: auto; }
+
+.conv-item {
+  padding: 14px 16px; border-bottom: 1px solid #f3ede7;
+  cursor: pointer; transition: background 0.12s;
+  position: relative;
+}
+.conv-item:hover { background: #faf7f4; }
+.conv-item.active { background: var(--bg-warm); border-right: 3px solid var(--burgundy); }
+
+.conv-name { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+.conv-phone { font-size: 12px; color: var(--text-muted); font-family: 'Jost', sans-serif; direction: ltr; text-align: right; }
+.conv-preview { font-size: 12px; color: #777; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
+.conv-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.conv-time { font-size: 11px; color: var(--text-muted); }
+
+.conv-status {
+  font-size: 10.5px; padding: 2px 8px; border-radius: 10px; font-weight: 500;
+}
+.st-open    { background: #e8f4fd; color: #2980b9; }
+.st-lead    { background: #fdecea; color: #c0392b; }
+.st-contacted { background: #fff3e0; color: #e67e22; }
+.st-converted { background: #e8f8e8; color: #27ae60; }
+.st-closed  { background: #f0f0f0; color: #888; }
+
+/* Detail panel */
+.detail-panel {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+  background: #F7F4F0;
+}
+
+.detail-empty {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px; color: var(--text-muted);
+}
+.detail-empty svg { width: 48px; height: 48px; opacity: 0.3; }
+.detail-empty p { font-size: 14px; }
+
+.detail-header {
+  background: #fff; padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
+  flex-shrink: 0;
+}
+
+.detail-visitor { flex: 1; }
+.detail-name { font-size: 16px; font-weight: 600; }
+.detail-phone { font-size: 13px; color: var(--text-muted); font-family: 'Jost', sans-serif; margin-top: 2px; direction: ltr; display: inline-block; }
+
+.detail-controls { display: flex; gap: 10px; align-items: center; }
+
+select.status-select {
+  border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px;
+  font-size: 13px; font-family: inherit; outline: none; cursor: pointer;
+  background: #fff; transition: border-color 0.15s;
+}
+select.status-select:focus { border-color: var(--burgundy); }
+
+.btn-save-note {
+  background: var(--burgundy); color: #fff;
+  border: none; border-radius: 8px; padding: 8px 14px;
+  font-size: 13px; font-family: inherit; cursor: pointer;
+  transition: background 0.15s; white-space: nowrap;
+}
+.btn-save-note:hover { background: var(--burgundy-dark); }
+
+/* Messages */
+.detail-messages {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.msg-bubble {
+  max-width: 70%; padding: 10px 14px; border-radius: 12px;
+  font-size: 13.5px; line-height: 1.65; white-space: pre-wrap; word-break: break-word;
+}
+.msg-bubble.user {
+  background: var(--burgundy); color: #fff;
+  align-self: flex-end; border-radius: 12px 4px 12px 12px;
+}
+.msg-bubble.assistant {
+  background: #fff; color: var(--ink);
+  align-self: flex-start; border-radius: 4px 12px 12px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.msg-time { font-size: 10.5px; opacity: 0.6; margin-top: 4px; }
+
+/* Note area */
+.detail-note {
+  background: #fff; border-top: 1px solid var(--border);
+  padding: 12px 20px; display: flex; gap: 10px; flex-shrink: 0;
+}
+.note-input {
+  flex: 1; border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 12px; font-size: 13px; font-family: inherit;
+  outline: none; resize: none; direction: rtl;
+}
+.note-input:focus { border-color: var(--burgundy); }
+
+/* Realtime badge */
+.rt-badge {
+  display: inline-block; width: 8px; height: 8px;
+  border-radius: 50%; background: #27ae60;
+  box-shadow: 0 0 0 2px rgba(39,174,96,0.25);
+  margin-left: 6px;
+}
+
+/* No conversations */
+.no-convs {
+  padding: 32px 16px; text-align: center; color: var(--text-muted); font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  :root { --sidebar-w: 260px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Login Screen ── -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">PIRO</div>
+    <div class="login-sub">پنل مدیریت دستیار هوشمند</div>
+    <input type="email" id="adminEmail" placeholder="ایمیل ادمین" autocomplete="email">
+    <input type="password" id="adminPass" placeholder="رمز عبور" autocomplete="current-password">
+    <button class="btn-primary" id="loginBtn" onclick="doLogin()">ورود به پنل</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ── App ── -->
+<div id="app">
+
+  <!-- Header -->
+  <header class="app-header">
+    <span class="app-logo lat">PIRO</span>
+    <span class="app-header-title">پنل مدیریت دستیار</span>
+    <span class="rt-badge" id="rtBadge" title="اتصال Realtime"></span>
+    <div class="app-header-spacer"></div>
+    <button class="btn-logout" onclick="doLogout()">خروج</button>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num lat" id="statTotal">—</div><div class="stat-label">کل گفتگوها</div></div>
+    <div class="stat"><div class="stat-num lat" id="statToday">—</div><div class="stat-label">امروز</div></div>
+    <div class="stat"><div class="stat-num lat" id="statLeads">—</div><div class="stat-label">لیدها</div></div>
+    <div class="stat"><div class="stat-num lat" id="statConverted">—</div><div class="stat-label">تبدیل‌شده</div></div>
+  </div>
+
+  <!-- Body -->
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-filters" id="filterBar">
+        <button class="filter-btn active" data-filter="all">همه</button>
+        <button class="filter-btn" data-filter="open">باز</button>
+        <button class="filter-btn" data-filter="lead">لید</button>
+        <button class="filter-btn" data-filter="contacted">تماس‌شده</button>
+        <button class="filter-btn" data-filter="converted">تبدیل‌شده</button>
+        <button class="filter-btn" data-filter="closed">بسته</button>
+      </div>
+      <div class="sidebar-list" id="convList">
+        <div class="no-convs">در حال بارگذاری...</div>
+      </div>
+    </aside>
+
+    <!-- Detail -->
+    <main class="detail-panel" id="detailPanel">
+      <div class="detail-empty" id="detailEmpty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <p>یک گفتگو را انتخاب کنید</p>
+      </div>
+      <div id="detailContent" style="display:none; flex:1; flex-direction:column; overflow:hidden; display:none">
+        <div class="detail-header">
+          <div class="detail-visitor">
+            <div class="detail-name" id="detailName">—</div>
+            <div class="detail-phone lat" id="detailPhone"></div>
+          </div>
+          <div class="detail-controls">
+            <select class="status-select" id="statusSelect" onchange="updateStatus()">
+              <option value="open">باز</option>
+              <option value="lead">لید</option>
+              <option value="contacted">تماس‌شده</option>
+              <option value="converted">تبدیل‌شده</option>
+              <option value="closed">بسته</option>
+            </select>
+          </div>
+        </div>
+        <div class="detail-messages" id="detailMessages"></div>
+        <div class="detail-note">
+          <textarea class="note-input" id="noteInput" rows="2" placeholder="یادداشت برای این لید..."></textarea>
+          <button class="btn-save-note" onclick="saveNote()">ذخیره</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/supabase-client.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

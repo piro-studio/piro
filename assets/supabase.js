@@ -6,8 +6,8 @@
    اگر این مقادیر خالی بمانند، سایت به‌صورت خودکار به حالت دموی محلی (localStorage) برمی‌گردد.
 */
 
-const SUPABASE_URL  = "https://oebexlccwcidcwandxpx.supabase.co";
-const SUPABASE_ANON = "sb_publishable_cZjKXwvCUkZqhiIs3K49Zg_Whrbdg93";
+const SUPABASE_URL  = "";   // مثال: https://xxxx.supabase.co
+const SUPABASE_ANON = "";   // کلید anon public
 
 const PiroDB = {
   client: null,

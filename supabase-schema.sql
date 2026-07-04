@@ -184,3 +184,56 @@ $$;
 -- فایل assets/db.js → تابع importProducts() را اجرا کنید
 -- یا از SQL Editor این فایل را import کنید:
 -- ───────────────────────────────────────────
+
+-- ───────────────────────────────────────────
+-- 11. CHATBOT LEADS  (پنل ادمین → admin/index.html)
+-- هر گفتگو یک ردیف conversations دارد که با session_id
+-- (همان piro_sid سمت کاربر) پیدا/ساخته می‌شود؛ پیام‌ها در messages ذخیره می‌شوند.
+-- نوشتن این دو جدول فقط از سمت سرور (functions/api/chat.js با SERVICE_ROLE) انجام می‌شود.
+-- ───────────────────────────────────────────
+create table if not exists public.conversations (
+  id              uuid primary key default gen_random_uuid(),
+  session_id      text unique not null,
+  visitor_name    text,
+  visitor_phone   text,
+  status          text default 'open',   -- open | lead | contacted | converted | closed
+  note            text,
+  last_message_at timestamptz default now(),
+  created_at      timestamptz default now()
+);
+
+create table if not exists public.messages (
+  id              uuid primary key default gen_random_uuid(),
+  conversation_id uuid references public.conversations(id) on delete cascade,
+  role            text not null,        -- user | assistant
+  content         text not null,
+  created_at      timestamptz default now()
+);
+
+-- admin_users: فقط یک لیست عضویت — هیچ سطر عمومی insert نمی‌شود
+create table if not exists public.admin_users (
+  id uuid primary key references auth.users(id) on delete cascade
+);
+
+alter table public.conversations enable row level security;
+alter table public.messages      enable row level security;
+alter table public.admin_users   enable row level security;
+
+-- فقط کاربرانی که در admin_users هستند می‌توانند گفتگوها/پیام‌ها را بخوانند یا وضعیت را عوض کنند
+create policy "admin_read_conversations" on public.conversations for select
+  using ( exists (select 1 from public.admin_users a where a.id = auth.uid()) );
+create policy "admin_update_conversations" on public.conversations for update
+  using ( exists (select 1 from public.admin_users a where a.id = auth.uid()) );
+create policy "admin_read_messages" on public.messages for select
+  using ( exists (select 1 from public.admin_users a where a.id = auth.uid()) );
+
+-- هر کاربر فقط می‌تواند چک کند خودش ادمین هست یا نه
+create policy "admin_read_self" on public.admin_users for select
+  using ( auth.uid() = id );
+
+-- ───────────────────────────────────────────
+-- 12. برای افزودن یک ادمین جدید:
+-- ۱) در Authentication → Users یک کاربر با ایمیل/رمز بسازید
+-- ۲) در SQL Editor اجرا کنید (uuid را از همان صفحه کپی کنید):
+--    insert into public.admin_users (id) values ('<user-uuid>');
+-- ───────────────────────────────────────────

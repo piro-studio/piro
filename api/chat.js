@@ -166,6 +166,71 @@ async function fetchUserOrders(userId) {
   }
 }
 
+/* ── Lead capture (conversations/messages → admin/index.html) ────── */
+function extractPhone(text) {
+  const m = String(text).match(/0?9\d{9}\b/);
+  if (!m) return null;
+  return m[0].startsWith('0') ? m[0] : '0' + m[0];
+}
+
+async function findOrCreateConversation(sessionId) {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_KEY;
+  if (!url || !key || !sessionId) return null;
+  try {
+    const getRes = await fetch(
+      `${url}/rest/v1/conversations?session_id=eq.${encodeURIComponent(sessionId)}&select=id,visitor_phone,status&limit=1`,
+      { headers: supabaseHeaders(), signal: AbortSignal.timeout(1500) }
+    );
+    const rows = getRes.ok ? await getRes.json() : [];
+    if (rows.length) return rows[0];
+
+    const createRes = await fetch(`${url}/rest/v1/conversations`, {
+      method: 'POST',
+      headers: { ...supabaseHeaders(), 'Prefer': 'return=representation' },
+      body: JSON.stringify({ session_id: sessionId }),
+      signal: AbortSignal.timeout(1500),
+    });
+    if (!createRes.ok) return null;
+    const created = await createRes.json();
+    return created[0] || null;
+  } catch {
+    return null;
+  }
+}
+
+async function saveLeadTurn(sessionId, userText, reply) {
+  const url = process.env.SUPABASE_URL;
+  const conv = await findOrCreateConversation(sessionId);
+  if (!conv) return;
+
+  const patch = { last_message_at: new Date().toISOString() };
+  const phone = extractPhone(userText);
+  if (phone && !conv.visitor_phone) {
+    patch.visitor_phone = phone;
+    if (!conv.status || conv.status === 'open') patch.status = 'lead';
+  }
+
+  try {
+    await fetch(`${url}/rest/v1/conversations?id=eq.${conv.id}`, {
+      method: 'PATCH',
+      headers: supabaseHeaders(),
+      body: JSON.stringify(patch),
+      signal: AbortSignal.timeout(1500),
+    });
+
+    await fetch(`${url}/rest/v1/messages`, {
+      method: 'POST',
+      headers: supabaseHeaders(),
+      body: JSON.stringify([
+        { conversation_id: conv.id, role: 'user', content: userText },
+        { conversation_id: conv.id, role: 'assistant', content: reply },
+      ]),
+      signal: AbortSignal.timeout(2000),
+    });
+  } catch {}
+}
+
 function buildSystemPrompt(catalog, user, orders) {
   let userCtx = '';
   if (user && user.firstName) {
@@ -189,9 +254,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  let messages, user;
+  let messages, user, sessionId;
   try {
-    ({ messages, user } = req.body);
+    ({ messages, user, sessionId } = req.body);
     if (!Array.isArray(messages) || messages.length === 0) throw new Error('invalid');
   } catch {
     return res.status(400).json({ error: 'Invalid request body' });
@@ -241,6 +306,9 @@ export default async function handler(req, res) {
   return true;
 });
 const cleanReply = lines.join('\n').trim();
+    const lastUserMsg = sanitized[sanitized.length - 1];
+    // باید await شود — Vercel بعد از پاسخ، اجرای پرامیس‌های معلق را تضمین نمی‌کند
+    await saveLeadTurn(sessionId, lastUserMsg?.content || '', cleanReply).catch(() => {});
     return res.status(200).json({ reply: cleanReply });
 
   } catch (err) {
