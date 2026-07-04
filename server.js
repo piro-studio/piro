@@ -62,9 +62,12 @@ const server = http.createServer(async (req, res) => {
 
   // API endpoint — forward to Netlify function handler
   if (req.url === '/api/chat') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
+    const chunks = [];
+    req.on('data', chunk => { chunks.push(chunk); });
     req.on('end', async () => {
+      // باید همه بایت‌ها اول جمع بشن و بعد یک‌جا decode بشن — وگرنه کاراکترهای
+      // چندبایتی UTF-8 (فارسی) که نقطه برش chunk وسطشون بیفته خراب می‌شن
+      const body = Buffer.concat(chunks).toString('utf8');
       try {
         const result = await handler({ httpMethod: req.method, body, headers: req.headers });
         res.writeHead(result.statusCode, result.headers || {});
