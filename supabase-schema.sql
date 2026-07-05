@@ -237,3 +237,125 @@ create policy "admin_read_self" on public.admin_users for select
 -- ۲) در SQL Editor اجرا کنید (uuid را از همان صفحه کپی کنید):
 --    insert into public.admin_users (id) values ('<user-uuid>');
 -- ───────────────────────────────────────────
+
+-- ================================================================
+-- پنل ادمین جدید (Next.js) — افزوده‌های افزایشی، بدون تغییر در
+-- جدول‌ها/RLS بالا. همه‌ی نوشتن‌ها فقط با کلید service-role از سمت
+-- سرور پنل ادمین انجام می‌شود؛ به همین دلیل هیچ policy نوشتنی
+-- (insert/update/delete) روی این جدول‌ها تعریف نشده است.
+-- ================================================================
+
+-- ───────────────────────────────────────────
+-- 13. PRODUCTS — افزودن فیلدهای محتوای غنی
+-- (تا امروز این فیلدها فقط داخل assets/products.js بودند)
+-- ───────────────────────────────────────────
+alter table public.products
+  add column if not exists imgs        jsonb,   -- ["diba2.jpg","diba2-dec.jpg", ...]
+  add column if not exists alts        jsonb,   -- alt-text به همان ترتیب imgs
+  add column if not exists img_pos     text,    -- CSS object-position مثل "right center"
+  add column if not exists tech_img    text,    -- نام فایل تصویر ابعاد/فنی، یا خالی
+  add column if not exists desc_fa     text,
+  add column if not exists desc_en     text,
+  add column if not exists story_fa    jsonb,   -- آرایه پاراگراف‌ها
+  add column if not exists story_en    jsonb,
+  add column if not exists specs       jsonb,   -- [{ "fa","en","vFa","vEn" }, ...]
+  add column if not exists care_fa     jsonb,   -- آرایه رشته‌ها
+  add column if not exists care_en     jsonb,
+  add column if not exists companion   jsonb,   -- { "name","nameFa","img","href","noteFa","noteEn" } یا null
+  add column if not exists install_fa  text,    -- متن HTML قسط (مثل «۱۲ قسط ماهیانه ...»)
+  add column if not exists install_en  text;
+
+-- ───────────────────────────────────────────
+-- 14. CATEGORIES — جایگزین آبجکت‌های هاردکد MAIN_CATS/SUB_CATS در shop.html
+-- یک جدول خودارجاع (parent_id) به‌جای دو جدول جدا
+-- ───────────────────────────────────────────
+create table if not exists public.categories (
+  id          text primary key,              -- slug، مثل 'living' یا 'lounge'
+  parent_id   text references public.categories(id) on delete set null,
+  name_fa     text not null,
+  name_en     text not null,
+  sort_order  int default 0,
+  is_active   boolean default true,
+  created_at  timestamptz default now()
+);
+
+alter table public.categories enable row level security;
+create policy "categories_public_read"
+  on public.categories for select using (is_active = true);
+
+-- ───────────────────────────────────────────
+-- 15. PAGES — محتوای ساختاریافته صفحات about/contact/installments/guide
+-- شکل ستون content مخصوص هر key است (فرم ادمین هر صفحه اختصاصی می‌سازد،
+-- نه یک ادیتور JSON خام)
+-- ───────────────────────────────────────────
+create table if not exists public.pages (
+  key         text primary key,   -- 'about' | 'contact' | 'installments' | 'guide' | 'catalogue'
+  title       text,
+  content     jsonb not null default '{}',
+  updated_at  timestamptz default now()
+);
+
+alter table public.pages enable row level security;
+create policy "pages_public_read"
+  on public.pages for select using (true);
+
+-- ───────────────────────────────────────────
+-- 16. SITE SETTINGS — تک‌ردیفی، جایگزین اطلاعات تماس هاردکد و
+-- ناهماهنگ فعلی در ۸+ فایل HTML (تلفن، ایمیل، آدرس، اینستاگرام، ...)
+-- ───────────────────────────────────────────
+create table if not exists public.site_settings (
+  id               int primary key default 1,
+  phone_1          text,
+  phone_2          text,
+  email            text,
+  address_fa       text,
+  address_en       text,
+  instagram_handle text,
+  whatsapp         text,
+  working_hours_fa text,
+  working_hours_en text,
+  updated_at       timestamptz default now(),
+  constraint singleton check (id = 1)
+);
+
+alter table public.site_settings enable row level security;
+create policy "site_settings_public_read"
+  on public.site_settings for select using (true);
+
+insert into public.site_settings (id) values (1) on conflict (id) do nothing;
+
+-- ───────────────────────────────────────────
+-- 17. سیدینگ categories — از MAIN_CATS/SUB_CATS/SUB_ORDER فعلی shop.html
+-- ───────────────────────────────────────────
+insert into public.categories (id, parent_id, name_fa, name_en, sort_order) values
+  ('living',   null, 'نشیمن',              'Living Room',        1),
+  ('bedroom',  null, 'سرویس خواب',          'Bedroom',             2),
+  ('tables',   null, 'میز',                'Tables',              3),
+  ('console',  null, 'کنسول و اکسسوری',     'Console & Accessories', 4)
+on conflict (id) do nothing;
+
+insert into public.categories (id, parent_id, name_fa, name_en, sort_order) values
+  ('lounge',      'living',  'مبل راحتی',       'Lounge Chair',      1),
+  ('chair',       'living',  'صندلی',           'Chair',             2),
+  ('barstool',    'living',  'استول',           'Barstool',          3),
+  ('bench',       'living',  'نیمکت',           'Bench & Loveseat',  4),
+  ('bed',         'bedroom', 'تخت‌خواب',        'Bed',               5),
+  ('nightstand',  'bedroom', 'پاتختی',          'Nightstand',        6),
+  ('dresser',     'bedroom', 'دراور',           'Dresser',           7),
+  ('hanger',      'bedroom', 'رخت آویز',        'Clothes Hanger',    8),
+  ('dining',      'tables',  'میز ناهارخوری',   'Dining Table',      9),
+  ('coffee',      'tables',  'میز جلو مبلی',    'Coffee Table',      10),
+  ('sidetable',   'tables',  'میز عسلی',        'Side Table',        11),
+  ('bartable',    'tables',  'میز بار',         'Bar Table',         12),
+  ('desk',        'tables',  'میز تحریر',       'Writing Desk',      13),
+  ('vanity',      'tables',  'میز آرایش',       'Vanity Table',      14),
+  ('sideboard',   'console', 'سایدبورد',        'Sideboard',         15),
+  ('consoleunit', 'console', 'کنسول',           'Console',           16),
+  ('tv',          'console', 'میز تلویزیون',    'TV Unit',           17),
+  ('cabinet',     'console', 'کابینت و جاکفشی', 'Cabinet',           18),
+  ('mirror',      'console', 'آینه',            'Mirror',            19),
+  ('shelf',       'console', 'شلف',             'Shelf',             20),
+  ('lamp',        'console', 'آباژور',          'Floor Lamp',        21)
+on conflict (id) do nothing;
+-- منبع: MAIN_CATS/SUB_CATS/SUB_ORDER در shop.html (خطوط ۳۱۶-۳۵۵)
+-- ───────────────────────────────────────────
