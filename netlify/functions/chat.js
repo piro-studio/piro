@@ -218,6 +218,73 @@ async function saveSession(sessionId, user, messages, reply) {
   }
 }
 
+/* ── Lead capture (conversations/messages → admin/index.html) ────── */
+function extractPhone(text) {
+  const m = String(text).match(/0?9\d{9}\b/);
+  if (!m) return null;
+  return m[0].startsWith('0') ? m[0] : '0' + m[0];
+}
+
+async function findOrCreateConversation(sessionId) {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_KEY;
+  if (!url || !key || !sessionId) return null;
+  try {
+    const getRes = await proxyFetch(
+      `${url}/rest/v1/conversations?session_id=eq.${encodeURIComponent(sessionId)}&select=id,visitor_phone,status&limit=1`,
+      { headers: supabaseHeaders(), signal: AbortSignal.timeout(800) }
+    );
+    const rows = getRes.ok ? await getRes.json() : [];
+    if (rows.length) return rows[0];
+
+    const createRes = await proxyFetch(`${url}/rest/v1/conversations`, {
+      method: 'POST',
+      headers: supabaseHeaders(),
+      body: JSON.stringify({ session_id: sessionId }),
+      signal: AbortSignal.timeout(800),
+    });
+    if (!createRes.ok) return null;
+    const created = await createRes.json();
+    return created[0] || null;
+  } catch {
+    return null;
+  }
+}
+
+async function saveLeadTurn(sessionId, userText, reply) {
+  const url = process.env.SUPABASE_URL;
+  const conv = await findOrCreateConversation(sessionId);
+  if (!conv) return;
+
+  const patch = { last_message_at: new Date().toISOString() };
+  const phone = extractPhone(userText);
+  if (phone && !conv.visitor_phone) {
+    patch.visitor_phone = phone;
+    if (!conv.status || conv.status === 'open') patch.status = 'lead';
+  }
+
+  try {
+    await proxyFetch(`${url}/rest/v1/conversations?id=eq.${conv.id}`, {
+      method: 'PATCH',
+      headers: supabaseHeaders(),
+      body: JSON.stringify(patch),
+      signal: AbortSignal.timeout(800),
+    });
+
+    await proxyFetch(`${url}/rest/v1/messages`, {
+      method: 'POST',
+      headers: supabaseHeaders(),
+      body: JSON.stringify([
+        { conversation_id: conv.id, role: 'user', content: userText },
+        { conversation_id: conv.id, role: 'assistant', content: reply },
+      ]),
+      signal: AbortSignal.timeout(800),
+    });
+  } catch {
+    // Non-critical — ignore save errors
+  }
+}
+
 /* ── Build dynamic system prompt ─────────────────────────────────── */
 function buildSystemPrompt(catalog, user) {
   let userCtx = '';
@@ -302,8 +369,9 @@ exports.handler = async (event) => {
     const data  = await response.json();
     const reply = data.content?.[0]?.text || '';
 
-    // Save session (non-blocking)
+    // Save session + lead (non-blocking)
     saveSession(sessionId, user, chatMessages, reply);
+    saveLeadTurn(sessionId, latestMsg.content, reply);
 
     return { statusCode: 200, headers, body: JSON.stringify({ reply }) };
 
