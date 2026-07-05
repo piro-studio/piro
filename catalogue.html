@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -46,7 +46,6 @@
   @media (max-width:900px){ .cat-grid{grid-template-columns:1fr;} }
   @media (max-width:560px){ .catcard{grid-template-columns:1fr;} .catcard .cover{height:220px;} }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
 </head>
 <body>
 
@@ -164,9 +163,9 @@
           </div>
         </li>
         <li><a href="catalogue.html" data-en="Catalogue">کاتالوگ</a></li>
-        <li><a href="#" data-en="Installments">فروش اقساطی</a></li>
+        <li><a href="installments.html" data-en="Installments">فروش اقساطی</a></li>
         <li><a href="about.html" data-en="About">درباره ما</a></li>
-        <li><a href="#" data-en="Contact">تماس</a></li>
+        <li><a href="contact.html" data-en="Contact">تماس</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -291,7 +290,7 @@
 <aside class="drawer" id="drawer">
   <button class="drawer-close" onclick="closeDrawer()">×</button>
   <h4 data-en="Menu">منو</h4>
-  <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="catalogue.html" data-en="Catalogue">کاتالوگ</a><a href="about.html" data-en="About Us">درباره ما</a><a href="#" data-en="Contact">تماس</a>
+  <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="catalogue.html" data-en="Catalogue">کاتالوگ</a><a href="about.html" data-en="About Us">درباره ما</a><a href="installments.html" data-en="Installments">فروش اقساطی</a><a href="contact.html" data-en="Contact">تماس</a>
 </aside>
 
 <!-- Viewer Modal -->
@@ -322,7 +321,5 @@ function closeViewer(e) {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewerBtn(); });
 </script>
-
-<script src="assets/chatbot.js"></script>
 </body>
 </html>

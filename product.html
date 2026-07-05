@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="assets/chatbot.css">
 <style>
   .pd-wrap { max-width:var(--maxw); margin:0 auto; padding:clamp(28px,3.5vw,44px) var(--gut) clamp(20px,2.5vw,32px); }
+  .pd-wrap .empty-state { text-align:center; padding:100px 0 8px; color:var(--grey); font-size:15px; }
   .crumbs { font-family:var(--font-lat); font-size:11px; letter-spacing:0.08em; color:var(--grey); margin-bottom:32px; }
   .crumbs a:hover { color:var(--burgundy); }
   .pd-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:clamp(30px,5vw,72px); align-items:start; }
@@ -299,9 +300,9 @@
           </div>
         </li>
         <li><a href="catalogue.html" data-en="Catalogue">کاتالوگ</a></li>
-        <li><a href="#" data-en="Installments">فروش اقساطی</a></li>
+        <li><a href="installments.html" data-en="Installments">فروش اقساطی</a></li>
         <li><a href="about.html" data-en="About">درباره ما</a></li>
-        <li><a href="#" data-en="Contact">تماس</a></li>
+        <li><a href="contact.html" data-en="Contact">تماس</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -514,7 +515,7 @@
     </div>
     <div class="footer-col"><h4 data-en="Menu">منو</h4><ul><li><a href="index.html" data-en="Home">خانه</a></li><li><a href="shop.html" data-en="Products">محصولات</a></li><li><a href="about.html" data-en="About Us">درباره ما</a></li></ul></div>
     <div class="footer-col"><h4 data-en="Categories">دسته‌بندی</h4><ul><li><a href="shop.html" data-en="Living Room">نشیمن</a></li><li><a href="shop.html" data-en="Tables">میز</a></li></ul></div>
-    <div class="footer-col"><h4 data-en="Support">پشتیبانی</h4><ul><li><a href="#" data-en="Warranty">گارانتی</a></li><li><a href="#" data-en="Contact">تماس</a></li></ul></div>
+    <div class="footer-col"><h4 data-en="Support">پشتیبانی</h4><ul><li><a href="#" data-en="Warranty">گارانتی</a></li><li><a href="installments.html" data-en="Installments">فروش اقساطی</a></li><li><a href="contact.html" data-en="Contact">تماس</a></li></ul></div>
     <div class="footer-col footer-contact"><h4 data-en="Contact">تماس</h4><div><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>تهران، ایران</span></div></div>
   </div>
   <div class="footer-bottom"><p data-en="© 2024 PIRO Furniture — All Rights Reserved">© ۱۴۰۳ خانه پیرو — تمامی حقوق محفوظ است</p><span class="lat">© 2024 PIRO Furniture</span></div>
@@ -524,7 +525,7 @@
 <aside class="drawer" id="drawer">
   <button class="drawer-close" onclick="closeDrawer()">×</button>
   <h4 data-en="Menu">منو</h4>
-  <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="about.html" data-en="About Us">درباره ما</a><a href="#" data-en="Contact">تماس</a>
+  <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="about.html" data-en="About Us">درباره ما</a><a href="installments.html" data-en="Installments">فروش اقساطی</a><a href="contact.html" data-en="Contact">تماس</a>
 </aside>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -552,8 +553,23 @@
   // Load product from URL ?id=
   (function(){
     const id = new URLSearchParams(location.search).get('id');
-    const p = id && PRODUCTS[id] ? PRODUCTS[id] : PRODUCTS.alto;
+    const p = id && PRODUCTS[id] ? PRODUCTS[id] : null;
     const isEn = localStorage.getItem('piro_lang') === 'en';
+
+    if (!p) {
+      const wrap = document.querySelector('.pd-wrap');
+      if (wrap) {
+        wrap.innerHTML = `<p class="empty-state" data-en="Product not found.">محصول مورد نظر یافت نشد.</p>
+          <p class="empty-state" style="padding-top:0;"><a href="shop.html" data-en="Back to Shop →" style="color:var(--burgundy);">بازگشت به فروشگاه ←</a></p>`;
+      }
+      document.title = 'محصول یافت نشد | PIRO';
+      const extEl = document.getElementById('pdExt');
+      if (extEl) extEl.style.display = 'none';
+      const related = document.querySelector('.related');
+      if (related) related.style.display = 'none';
+      if (isEn && window.applyLang) applyLang('en');
+      return;
+    }
 
     // Breadcrumb
     document.querySelector('.crumbs').innerHTML =
