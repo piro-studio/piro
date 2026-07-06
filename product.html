@@ -550,10 +550,30 @@
   // ===== Dynamic product loader =====
   const PRODUCTS = Object.fromEntries(PIRO_PRODUCTS.map(p => [p.id, p]));
 
-  // Load product from URL ?id=
-  (function(){
+  // نگاشت دسته‌های اصلی برای catFa/catEn هنگام تبدیل ردیف DB (mapSupabaseProduct در assets/db.js)
+  const MAIN_CATS_FALLBACK = {
+    living:  { name_fa: 'نشیمن',           name_en: 'Living Room' },
+    bedroom: { name_fa: 'سرویس خواب',      name_en: 'Bedroom' },
+    tables:  { name_fa: 'میز',             name_en: 'Tables' },
+    console: { name_fa: 'کنسول و اکسسوری', name_en: 'Console & Accessories' },
+  };
+
+  // Load product from URL ?id= — ابتدا از Supabase، در صورت شکست از فایل استاتیک
+  (async function(){
     const id = new URLSearchParams(location.search).get('id');
-    const p = id && PRODUCTS[id] ? PRODUCTS[id] : null;
+    let p = null;
+
+    if (id && window.PIRO?.getProduct) {
+      try {
+        const dbProduct = await window.PIRO.getProduct(id);
+        if (dbProduct) p = window.PIRO.mapSupabaseProduct(dbProduct, MAIN_CATS_FALLBACK);
+      } catch (e) {
+        console.error('[PIRO] product DB fetch failed, falling back to static file', e);
+      }
+    }
+
+    if (!p) p = id && PRODUCTS[id] ? PRODUCTS[id] : null;
+
     const isEn = localStorage.getItem('piro_lang') === 'en';
 
     if (!p) {

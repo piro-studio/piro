@@ -31,6 +31,49 @@
     return data;
   }
 
+  async function getCategories() {
+    const { data, error } = await db.from('categories').select('*').eq('is_active', true).order('sort_order');
+    if (error) { console.error('[PIRO] getCategories:', error.message); return null; }
+    return data;
+  }
+
+  /* تبدیل ردیف خام Supabase (snake_case) به شکل PIRO_PRODUCTS (camelCase)
+     catMap: { [categoryId]: {name_fa, name_en} } — برای catFa/catEn/catSlug */
+  function mapSupabaseProduct(p, catMap = {}) {
+    const mainCat = catMap[p.category] || {};
+    return {
+      id:           p.id,
+      varGroup:     p.var_group,
+      varOrder:     p.var_order,
+      variantLabel: p.variant_label,
+      c:            p.category,
+      sub:          p.sub,
+      fa:           p.name_fa,
+      en:           p.name_en,
+      price:        p.price,
+      img:          p.image,
+      img2:         p.image2,
+      imgPos:       p.img_pos || undefined,
+      catFa:        mainCat.name_fa || '',
+      catEn:        mainCat.name_en || '',
+      catSlug:      p.category,
+      imgs:         (p.imgs && p.imgs.length) ? p.imgs : [p.image].filter(Boolean),
+      alts:         p.alts || [],
+      techImg:      p.tech_img || null,
+      descFa:       p.desc_fa || '',
+      descEn:       p.desc_en || '',
+      storyFa:      p.story_fa || [],
+      storyEn:      p.story_en || [],
+      specs:        p.specs || [],
+      careFa:       p.care_fa || [],
+      careEn:       p.care_en || [],
+      companion:    p.companion || null,
+      installFa:    p.install_fa || '',
+      installEn:    p.install_en || '',
+      badge:        p.badge,
+    };
+  }
+
   /* import از آرایه JS موجود در shop.html — فقط یک بار اجرا شود */
   async function importProducts(productsArray) {
     const rows = productsArray.map(p => ({
@@ -361,7 +404,7 @@
   /* ── Export ── */
   Object.assign(window.PIRO, {
     // Products
-    getProducts, getProduct, importProducts,
+    getProducts, getProduct, getCategories, importProducts, mapSupabaseProduct,
     // Cart
     getCart, addToCart, updateCartQty, removeFromCart, clearCart, refreshCartCount,
     // Wishlist

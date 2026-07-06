@@ -354,49 +354,20 @@
     sideboard:15, consoleunit:16, tv:17, cabinet:18, mirror:19, shelf:20, lamp:21
   };
 
-  // ===== محصولات خانه پیرو (fallback — از Supabase بارگذاری می‌شود) =====
+  // ===== محصولات خانه پیرو (fallback — تا بارگذاری از Supabase) =====
   let products = PIRO_PRODUCTS.slice();
 
-  // ===== اصلاح محلی — تا به‌روزرسانی دیتابیس =====
-  const PRODUCT_OVERRIDES = {
-    'diba2':   { sub:'lounge', fa:'مبل دیبا',   en:'Diba',    img:'diba2.jpg',   img2:'diba2-dec.jpg' },
-    'diba3':   { sub:'lounge', fa:'مبل دیبا',   en:'Diba',    img:'diba3.jpg',   img2:'diba3-dec.jpg' },
-    'hamdam':  { sub:'lounge', fa:'مبل همدم',   en:'Hamdam', img:'hamdam.jpg', img2:'hamdam-2.jpg' },
-    'zen':     {                                               img:'zen.jpg',     img2:'zen-d.jpg' },
-    'blando':  {                                               img:'blando.jpg',  img2:'blando-d.jpg' },
-    'chairb':  {                                               img:'chairb.jpg',  img2:'chairb-d.jpg' },
-    'lean':    {                                               img:'lean-sage.jpg',    img2:'lean-sage-d.jpg' },
-    'lam':     {                                               img:'lean-sage.jpg',    img2:'lean-sage-d.jpg' },
-    'alef':    {                                               img:'alef.jpg',    img2:'alef-d.jpg' },
-    'leanbar': {                                               img:'leanbar.jpg', img2:'leanbar-d.jpg' },
-  };
+  // نگاشت دسته‌های اصلی برای catFa/catEn هنگام تبدیل ردیف‌های DB (mapSupabaseProduct در assets/db.js)
+  const CAT_MAP = Object.fromEntries(
+    Object.entries(MAIN_CATS).filter(([k]) => k).map(([k, v]) => [k, { name_fa: v.fa, name_en: v.en }])
+  );
 
   // ===== بارگذاری از Supabase =====
-  function mapSupabaseProduct(p) {
-    const ov = PRODUCT_OVERRIDES[p.id] || {};
-    const sub = ov.sub || p.sub;
-    if (sub === 'sofa') return null;
-    return {
-      id:           p.id,
-      varGroup:     p.var_group,
-      varOrder:     p.var_order,
-      variantLabel: p.variant_label,
-      c:            p.category,
-      sub:          sub,
-      fa:           ov.fa   || p.name_fa,
-      en:           ov.en   || p.name_en,
-      price:        p.price,
-      img:          ov.img  || p.image,
-      img2:         ov.img2 || p.image2,
-      badge:        p.badge,
-    };
-  }
-
   async function loadProductsFromDB() {
     if (!window.PIRO?.getProducts) return;
     const data = await window.PIRO.getProducts();
     if (data && data.length) {
-      products = data.map(mapSupabaseProduct).filter(Boolean);
+      products = data.map((p) => window.PIRO.mapSupabaseProduct(p, CAT_MAP)).filter((p) => p.sub !== 'sofa');
       renderGrid();
     }
   }
@@ -523,7 +494,7 @@
   }
 
   renderGrid();
-  // loadProductsFromDB(); // غیرفعال — محصولات از HTML فایل مدیریت می‌شوند
+  loadProductsFromDB();
 </script>
 </body>
 </html>
