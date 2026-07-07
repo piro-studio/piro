@@ -565,8 +565,19 @@
 
     if (id && window.PIRO?.getProduct) {
       try {
-        const dbProduct = await window.PIRO.getProduct(id);
-        if (dbProduct) p = window.PIRO.mapSupabaseProduct(dbProduct, MAIN_CATS_FALLBACK);
+        const [dbProduct, categories] = await Promise.all([
+          window.PIRO.getProduct(id),
+          window.PIRO.getCategories?.() ?? null,
+        ]);
+        if (dbProduct) {
+          let catMap = MAIN_CATS_FALLBACK;
+          if (categories && categories.length) {
+            catMap = Object.fromEntries(
+              categories.filter((c) => !c.parent_id).map((c) => [c.id, { name_fa: c.name_fa, name_en: c.name_en }])
+            );
+          }
+          p = window.PIRO.mapSupabaseProduct(dbProduct, catMap);
+        }
       } catch (e) {
         console.error('[PIRO] product DB fetch failed, falling back to static file', e);
       }

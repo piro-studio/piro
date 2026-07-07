@@ -312,8 +312,8 @@
 <script src="assets/chatbot.js"></script>
 <script src="assets/products.js"></script>
 <script>
-  // ===== دسته‌بندی اصلی =====
-  const MAIN_CATS = {
+  // ===== دسته‌بندی اصلی (fallback — تا بارگذاری از Supabase، جدول categories) =====
+  let MAIN_CATS = {
     '':      {fa:'همه',             en:'All'},
     living:  {fa:'نشیمن',           en:'Living Room'},
     bedroom: {fa:'سرویس خواب',      en:'Bedroom'},
@@ -321,8 +321,8 @@
     console: {fa:'کنسول و اکسسوری', en:'Console & Accessories'},
   };
 
-  // ===== زیردسته‌بندی =====
-  const SUB_CATS = {
+  // ===== زیردسته‌بندی (fallback) =====
+  let SUB_CATS = {
     lounge:     {fa:'مبل راحتی',       en:'Lounge Chair',     parent:'living'},
     chair:      {fa:'صندلی',           en:'Chair',            parent:'living'},
     barstool:   {fa:'استول',           en:'Barstool',         parent:'living'},
@@ -346,8 +346,8 @@
     lamp:       {fa:'آباژور',          en:'Floor Lamp',       parent:'console'},
   };
 
-  // ===== ترتیب نمایش زیردسته‌ها (بر اساس منوی مگا) =====
-  const SUB_ORDER = {
+  // ===== ترتیب نمایش زیردسته‌ها (fallback) =====
+  let SUB_ORDER = {
     lounge:1, chair:2, barstool:3, bench:4,
     bed:5, nightstand:6, dresser:7, hanger:8,
     dining:9, coffee:10, sidetable:11, bartable:12, desk:13, vanity:14,
@@ -358,9 +358,39 @@
   let products = PIRO_PRODUCTS.slice();
 
   // نگاشت دسته‌های اصلی برای catFa/catEn هنگام تبدیل ردیف‌های DB (mapSupabaseProduct در assets/db.js)
-  const CAT_MAP = Object.fromEntries(
+  let CAT_MAP = Object.fromEntries(
     Object.entries(MAIN_CATS).filter(([k]) => k).map(([k, v]) => [k, { name_fa: v.fa, name_en: v.en }])
   );
+
+  // ===== بارگذاری دسته‌بندی‌ها از Supabase (جدول categories) =====
+  async function loadCategoriesFromDB() {
+    if (!window.PIRO?.getCategories) return;
+    const data = await window.PIRO.getCategories();
+    if (!data || !data.length) return;
+
+    const dbMain = data.filter((c) => !c.parent_id);
+    const dbSub = data.filter((c) => c.parent_id);
+    if (!dbMain.length) return;
+
+    const newMain = { '': { fa: 'همه', en: 'All' } };
+    dbMain.forEach((c) => { newMain[c.id] = { fa: c.name_fa, en: c.name_en }; });
+    const newSub = {};
+    const newOrder = {};
+    dbSub.forEach((c) => {
+      newSub[c.id] = { fa: c.name_fa, en: c.name_en, parent: c.parent_id };
+      newOrder[c.id] = c.sort_order;
+    });
+
+    MAIN_CATS = newMain;
+    SUB_CATS = newSub;
+    SUB_ORDER = newOrder;
+    CAT_MAP = Object.fromEntries(
+      Object.entries(MAIN_CATS).filter(([k]) => k).map(([k, v]) => [k, { name_fa: v.fa, name_en: v.en }])
+    );
+
+    buildSubNav(activeCat);
+    renderGrid();
+  }
 
   // ===== بارگذاری از Supabase =====
   async function loadProductsFromDB() {
@@ -495,6 +525,7 @@
 
   renderGrid();
   loadProductsFromDB();
+  loadCategoriesFromDB();
 </script>
 </body>
 </html>
