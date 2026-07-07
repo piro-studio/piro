@@ -102,7 +102,7 @@
 }
 </style>
 </head>
-<body>
+<body data-page-key="contact">
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -218,7 +218,7 @@
 <!-- ===== PAGE HERO ===== -->
 <div class="page-hero reveal">
   <span class="eyebrow lat">CONTACT · تماس با ما</span>
-  <h1>بیایید با ما<br>صحبت کنید</h1>
+  <h1 id="pgHeroTitle">بیایید با ما<br>صحبت کنید</h1>
 </div>
 
 <!-- ===== CONTACT GRID ===== -->
@@ -320,10 +320,12 @@
   <div class="contact-showroom-inner">
     <div class="showroom-text reveal">
       <span class="eyebrow lat">SHOWROOM</span>
-      <h2>نمایشگاه خانه پیرو</h2>
-      <p>تهران، سعادت آباد، بالاتر از میدان بهرود، جنب هتل اسپیناس پالاس، مجتمع تجاری دیدار، طبقه دوم</p>
-      <p>پارکینگ رایگان در مجتمع دیدار موجود است. لطفاً از درب اصلی مجتمع وارد شوید.</p>
-      <p style="margin-top:20px;font-size:13px;color:var(--grey)">آدرس کارخانه: شهر قدس، انتهای بلوار امامزاده، بلوار ستاری، بن‌بست تخصص، پلاک ۷</p>
+      <h2 id="pgShowroomTitle">نمایشگاه خانه پیرو</h2>
+      <div id="pgShowroomParas">
+        <p>تهران، سعادت آباد، بالاتر از میدان بهرود، جنب هتل اسپیناس پالاس، مجتمع تجاری دیدار، طبقه دوم</p>
+        <p>پارکینگ رایگان در مجتمع دیدار موجود است. لطفاً از درب اصلی مجتمع وارد شوید.</p>
+      </div>
+      <p style="margin-top:20px;font-size:13px;color:var(--grey)" id="pgFactoryAddress">آدرس کارخانه: شهر قدس، انتهای بلوار امامزاده، بلوار ستاری، بن‌بست تخصص، پلاک ۷</p>
       <a href="https://maps.google.com/?q=اسپیناس+پالاس+سعادت+آباد+تهران" target="_blank" class="map-link lat">Open in Google Maps ↗</a>
     </div>
     <div class="showroom-img reveal" style="transition-delay:.1s">
@@ -438,6 +440,7 @@ function handleContactForm(e) {
 <script src="assets/supabase-client.js"></script>
 <script src="assets/db.js"></script>
 <script src="assets/site-content.js"></script>
+<script src="assets/page-content.js"></script>
 <script src="assets/main.js?v=2"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/chatbot.js"></script>

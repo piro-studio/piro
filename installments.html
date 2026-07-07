@@ -146,7 +146,7 @@
 }
 </style>
 </head>
-<body>
+<body data-page-key="installments">
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -243,7 +243,7 @@
 <div class="page-hero reveal">
   <div>
     <span class="eyebrow lat">INSTALLMENTS · فروش اقساطی</span>
-    <h1>خرید اقساطی<br>با دیجی‌پی</h1>
+    <h1 id="pgHeroTitle">خرید اقساطی<br>با دیجی‌پی</h1>
   </div>
   <div class="hero-partner reveal" style="transition-delay:.1s">
     <span class="partner-label lat">POWERED BY</span>
@@ -252,7 +252,7 @@
 </div>
 
 <!-- CREDIT STATS -->
-<div class="credit-strip">
+<div class="credit-strip" id="pgCreditStats">
   <div class="credit-stat reveal">
     <span class="num">۵۰</span>
     <span class="unit">میلیون تومان</span>
@@ -275,6 +275,7 @@
 
   <div class="inst-steps reveal">
     <h2>مراحل دریافت اعتبار</h2>
+    <div id="pgSteps">
     <div class="step">
       <div class="step-num">۱</div>
       <div class="step-body">
@@ -310,10 +311,12 @@
         <p>سفارش خود را در خانه پیرو ثبت کنید و از درگاه دیجی‌پی پرداخت نمایید. اگر مبلغ سفارش بیش از سقف اعتبار باشد، مابه‌التفاوت نقداً پرداخت می‌شود.</p>
       </div>
     </div>
+    </div>
   </div>
 
   <div class="inst-terms reveal" style="transition-delay:.1s">
     <h2>شرایط و مزایا</h2>
+    <div id="pgTerms">
     <div class="term-item">
       <div class="term-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
       <div>
@@ -342,6 +345,7 @@
         <p>متقاضیان بین ۱۸ تا ۷۰ سال می‌توانند درخواست دهند.</p>
       </div>
     </div>
+    </div>
   </div>
 
 </div>
@@ -350,8 +354,8 @@
 <section class="docs-section">
   <div class="docs-inner">
     <h2 class="reveal">مدارک مورد نیاز</h2>
-    <p class="reveal">برای دریافت اعتبار دیجی‌پی، مدارک زیر را آماده کنید:</p>
-    <div class="docs-grid">
+    <p class="reveal" id="pgDocumentsIntro">برای دریافت اعتبار دیجی‌پی، مدارک زیر را آماده کنید:</p>
+    <div class="docs-grid" id="pgDocuments">
       <div class="doc-card reveal">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
         <div>
@@ -380,8 +384,8 @@
 <!-- APPLY CTA -->
 <div class="inst-cta reveal">
   <span class="eyebrow lat">GET STARTED</span>
-  <h2>آماده‌اید خرید کنید؟</h2>
-  <p>برای شروع فرآیند دریافت اعتبار با تیم فروش خانه پیرو تماس بگیرید یا به نمایشگاه مراجعه کنید.</p>
+  <h2 id="pgCtaTitle">آماده‌اید خرید کنید؟</h2>
+  <p id="pgCtaBody">برای شروع فرآیند دریافت اعتبار با تیم فروش خانه پیرو تماس بگیرید یا به نمایشگاه مراجعه کنید.</p>
   <div class="cta-btns">
     <a href="tel:02126746724" class="btn-primary lat">
       تماس با فروش
@@ -467,6 +471,7 @@
 <script src="assets/supabase-client.js"></script>
 <script src="assets/db.js"></script>
 <script src="assets/site-content.js"></script>
+<script src="assets/page-content.js"></script>
 <script src="assets/main.js?v=2"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/chatbot.js"></script>

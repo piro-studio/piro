@@ -138,7 +138,7 @@
 }
 </style>
 </head>
-<body>
+<body data-page-key="guide">
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -260,10 +260,10 @@
     <section class="guide-section reveal" id="how-to-buy">
       <span class="eyebrow lat">HOW TO BUY</span>
       <h2>نحوه خرید</h2>
-      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:32px">
+      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:32px" id="pgHtbIntro">
         خرید از خانه پیرو ساده و شفاف است. محصولات ما سفارش‌پذیر و کاملاً قابل شخصی‌سازی در رنگ چوب و پارچه هستند.
       </p>
-      <div class="steps">
+      <div class="steps" id="pgHtbSteps">
         <div class="step">
           <div class="step-num">۱</div>
           <div class="step-body">
@@ -311,7 +311,7 @@
     <section class="guide-section reveal" id="shipping">
       <span class="eyebrow lat">SHIPPING & DELIVERY</span>
       <h2>ارسال و تحویل</h2>
-      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:8px">
+      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:8px" id="pgShipIntro">
         همه محصولات خانه پیرو سفارشی ساخته می‌شوند. زمان تولید ۶۰ روز کاری از تاریخ تأیید سفارش و دریافت پیش‌پرداخت است.
       </p>
       <table class="ship-table">
@@ -322,7 +322,7 @@
             <th>زمان تحویل</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="pgShipRegions">
           <tr>
             <td>تهران (داخل شهر)</td>
             <td><span class="tag-free">رایگان</span></td>
@@ -358,10 +358,10 @@
     <section class="guide-section reveal" id="warranty">
       <span class="eyebrow lat">WARRANTY</span>
       <h2>گارانتی محصولات</h2>
-      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:32px">
+      <p style="font-size:14.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:32px" id="pgWarrantyIntro">
         خانه پیرو به کیفیت ساخت محصولاتش ایمان دارد. همه محصولات با ضمانت کیفیت ارائه می‌شوند.
       </p>
-      <div class="warranty-list">
+      <div class="warranty-list" id="pgWarrantyItems">
         <div class="warranty-item">
           <div class="warranty-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div>
@@ -478,6 +478,7 @@
 <script src="assets/supabase-client.js"></script>
 <script src="assets/db.js"></script>
 <script src="assets/site-content.js"></script>
+<script src="assets/page-content.js"></script>
 <script src="assets/main.js?v=2"></script>
 <script src="assets/auth.js"></script>
 <script src="assets/chatbot.js"></script>
