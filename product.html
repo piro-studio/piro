@@ -636,9 +636,9 @@
     const thumbsEl = document.querySelector('.thumbs');
     const mainImg = document.getElementById('mainImg');
     thumbsEl.innerHTML = p.imgs.map((img, i) =>
-      `<div class="thumb${i===0?' active':''}" onclick="setMain(this,'images/${img}')"><img src="images/${img}" class="ph" alt="${p.alts[i]||p.fa}"></div>`
+      `<div class="thumb${i===0?' active':''}" onclick="setMain(this,'${window.PIRO.resolveImg(img)}')"><img src="${window.PIRO.resolveImg(img)}" class="ph" alt="${p.alts[i]||p.fa}"></div>`
     ).join('');
-    mainImg.src = `images/${p.imgs[0]}`;
+    mainImg.src = window.PIRO.resolveImg(p.imgs[0]);
     mainImg.alt = p.fa;
 
     // Page title
@@ -661,7 +661,7 @@
       const techGrid = document.querySelector('.tech-specs-grid');
       const techFile = p.techImg || null;
       if (techFile) {
-        techImgEl.src = `images/${techFile}`;
+        techImgEl.src = window.PIRO.resolveImg(techFile);
         techImgEl.alt = p.fa;
         techGrid.classList.remove('no-img');
       } else {
@@ -725,7 +725,7 @@
       productId: cp.id,
       name: p.fa,
       nameEn: p.en,
-      image: `images/${p.imgs[0]}`,
+      image: window.PIRO.resolveImg(p.imgs[0]),
       color: selectedColor,
       size: selectedSize,
       price: priceNum,

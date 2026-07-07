@@ -37,6 +37,13 @@
     return data;
   }
 
+  /* مسیر عکس محصول — پشتیبانی از نام فایل ساده (images/xxx.jpg) و
+     لینک کامل آپلودشده از پنل ادمین (Supabase Storage) */
+  function resolveImg(name) {
+    if (!name) return '';
+    return /^https?:\/\//.test(name) ? name : `images/${name}`;
+  }
+
   /* تبدیل ردیف خام Supabase (snake_case) به شکل PIRO_PRODUCTS (camelCase)
      catMap: { [categoryId]: {name_fa, name_en} } — برای catFa/catEn/catSlug */
   function mapSupabaseProduct(p, catMap = {}) {
@@ -404,7 +411,7 @@
   /* ── Export ── */
   Object.assign(window.PIRO, {
     // Products
-    getProducts, getProduct, getCategories, importProducts, mapSupabaseProduct,
+    getProducts, getProduct, getCategories, importProducts, mapSupabaseProduct, resolveImg,
     // Cart
     getCart, addToCart, updateCartQty, removeFromCart, clearCart, refreshCartCount,
     // Wishlist

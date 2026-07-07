@@ -506,8 +506,8 @@
       return `
       <article class="pcard reveal" style="transition-delay:${delay}s" onclick="location.href='product.html?id=${p.id}'">
         <div class="pimg">
-          <img src="images/${p.img}" alt="${p.fa}" class="ph ph1" loading="lazy" decoding="async">
-          ${p.img2?`<img src="images/${p.img2}" alt="${p.fa}" class="ph ph2" loading="lazy" decoding="async" style="${p.imgFit?'object-fit:'+p.imgFit+';':''}${p.imgPos?'object-position:'+p.imgPos:''}">`:''}
+          <img src="${window.PIRO.resolveImg(p.img)}" alt="${p.fa}" class="ph ph1" loading="lazy" decoding="async">
+          ${p.img2?`<img src="${window.PIRO.resolveImg(p.img2)}" alt="${p.fa}" class="ph ph2" loading="lazy" decoding="async" style="${p.imgFit?'object-fit:'+p.imgFit+';':''}${p.imgPos?'object-position:'+p.imgPos:''}">`:''}
           ${p.badge?`<span class="pbadge">${p.badge}</span>`:''}
           <button class="pfav" onclick="favToggle(event,this)" aria-label="افزودن به علاقه‌مندی‌ها"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
         </div>
