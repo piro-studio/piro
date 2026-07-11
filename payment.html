@@ -308,6 +308,30 @@ function submitPayment() {
   btn.classList.add('loading');
   clearInterval(timerInterval);
 
+  // ارسال سفارش به Apps Script
+  try {
+    const co = JSON.parse(sessionStorage.getItem('piro_checkout_data') || '{}');
+    const cart = JSON.parse(localStorage.getItem('piro_cart_items') || localStorage.getItem('piro_cart') || '[]');
+    fetch('https://script.google.com/macros/s/AKfycbzrAmp5EWUOjhiyLXB9IFS1WmpMgjTb-0yPTk1d_RPi00x0z75y-FZMZi6GcXdLeU4pmw/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        order_id: 'PIRO-' + Math.floor(Math.random() * 900000 + 100000),
+        timestamp: new Date().toISOString(),
+        customer: {
+          name: co.firstName + ' ' + co.lastName,
+          phone: co.mobile,
+          email: co.email || '',
+          city: co.city || co.province || '',
+          address: co.address || '',
+          notes: co.notes || ''
+        },
+        items: cart,
+        total_num: co.total || 0
+      })
+    }).catch(() => {});
+  } catch(e) {}
+
   setTimeout(() => {
     location.href = 'order-success.html';
   }, 2000);
