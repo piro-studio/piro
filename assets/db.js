@@ -303,6 +303,28 @@
     return true;
   }
 
+  // فرم تماس همین را صدا می‌زند — لید مستقیم در CRM پیرو (پنل ادمین) ثبت می‌شود.
+  const _isLocalHost = /^(localhost|127\.)/.test(location.hostname);
+  const CRM_WEBHOOK_URL = _isLocalHost
+    ? 'http://localhost:3000/api/webhooks/site-signup'
+    : 'https://piro-admin.vercel.app/api/webhooks/site-signup';
+
+  async function sendCrmLead({ name, phone, email, subject, message }) {
+    try {
+      const res = await fetch(CRM_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ full_name: name, phone, email, subject, message }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return { ok: false, msg: data?.error || 'خطایی رخ داد. لطفاً دوباره تلاش کنید.' };
+      return { ok: true };
+    } catch (err) {
+      console.error('[PIRO] sendCrmLead:', err.message);
+      return { ok: false, msg: 'ارتباط برقرار نشد. لطفاً دوباره تلاش کنید.' };
+    }
+  }
+
   /* ────────────────────────────────────────────
      AUTH
   ──────────────────────────────────────────── */
@@ -419,7 +441,7 @@
     // Newsletter
     subscribeNewsletter,
     // Contact
-    sendContactMessage,
+    sendContactMessage, sendCrmLead,
     // Auth
     signUp, signIn, signOut, resetPassword,
     // Chatbot

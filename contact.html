@@ -427,12 +427,36 @@
 </aside>
 
 <script>
-function handleContactForm(e) {
+async function handleContactForm(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.cf-submit');
-  btn.textContent = 'پیام ارسال شد ✓';
-  btn.style.background = '#2d6a2d';
+  const form = e.target;
+  const btn = form.querySelector('.cf-submit');
+  const name = form.querySelector('#cf-name').value.trim();
+  const phone = form.querySelector('#cf-phone').value.trim();
+  const email = form.querySelector('#cf-email').value.trim();
+  const subject = form.querySelector('#cf-subject').value;
+  const message = form.querySelector('#cf-msg').value.trim();
+
+  if (!name || !phone) {
+    alert('لطفاً نام و شماره تماس را وارد کنید.');
+    return false;
+  }
+
+  const originalTxt = btn.textContent;
   btn.disabled = true;
+  btn.textContent = 'در حال ارسال...';
+
+  const { ok, msg } = await window.PIRO.sendCrmLead({ name, phone, email, subject, message });
+
+  if (ok) {
+    btn.textContent = 'پیام ارسال شد ✓';
+    btn.style.background = '#2d6a2d';
+    form.reset();
+  } else {
+    btn.disabled = false;
+    btn.textContent = originalTxt;
+    alert(msg || 'خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+  }
   return false;
 }
 </script>
