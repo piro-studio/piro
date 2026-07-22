@@ -435,7 +435,8 @@
     direction: rtl;
   }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -612,6 +613,6 @@
 </div>
 
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

@@ -1,14 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>میز بار آلتو | PIRO</title>
 <meta name="description" content="میز بار آلتو — چوب طبیعی، طراحی مینیمال. ساخت دست خانه پیرو.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Noto+Sans+Arabic:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Noto+Sans+Arabic:wght@300;400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Noto+Sans+Arabic:wght@300;400&display=swap"></noscript>
 <link rel="stylesheet" href="assets/styles.css">
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 <style>
   .pd-wrap { max-width:var(--maxw); margin:0 auto; padding:clamp(28px,3.5vw,44px) var(--gut) clamp(20px,2.5vw,32px); }
   .pd-wrap .empty-state { text-align:center; padding:100px 0 8px; color:var(--grey); font-size:15px; }
@@ -323,10 +329,10 @@
     <!-- Gallery -->
     <div class="gallery">
       <div class="thumbs">
-        <div class="thumb active" onclick="setMain(this,'images/alto-1.jpg')"><img src="images/alto-1.jpg" class="ph" alt="میز بار آلتو چیدمان‌شده"></div>
-        <div class="thumb" onclick="setMain(this,'images/alto-2.jpg')"><img src="images/alto-2.jpg" class="ph" alt="میز بار آلتو نمای کامل"></div>
-        <div class="thumb" onclick="setMain(this,'images/alto-4.jpg')"><img src="images/alto-4.jpg" class="ph" alt="موج صفحه میز آلتو"></div>
-        <div class="thumb" onclick="setMain(this,'images/alto-3.jpg')"><img src="images/alto-3.jpg" class="ph" alt="جزئیات اتصال آلتو"></div>
+        <div class="thumb active" onclick="setMain(this,'images/alto-1.jpg')"><img src="images/alto-1.jpg" class="ph" alt="میز بار آلتو چیدمان‌شده" loading="lazy" decoding="async"></div>
+        <div class="thumb" onclick="setMain(this,'images/alto-2.jpg')"><img src="images/alto-2.jpg" class="ph" alt="میز بار آلتو نمای کامل" loading="lazy" decoding="async"></div>
+        <div class="thumb" onclick="setMain(this,'images/alto-4.jpg')"><img src="images/alto-4.jpg" class="ph" alt="موج صفحه میز آلتو" loading="lazy" decoding="async"></div>
+        <div class="thumb" onclick="setMain(this,'images/alto-3.jpg')"><img src="images/alto-3.jpg" class="ph" alt="جزئیات اتصال آلتو" loading="lazy" decoding="async"></div>
       </div>
       <div class="main-img">
         <img src="images/alto-1.jpg" class="ph" id="mainImg" alt="میز بار آلتو">
@@ -348,15 +354,15 @@
       <div class="opt-block">
         <div class="lbl" data-en="Wood Finish — Rubio Monocoat®">رنگ چوب — روبیو مونوکوت®</div>
         <div class="wood-swatches" id="woodSwatches">
-          <button class="wood-sw active" onclick="pickWood(this,'Pure')"        title="Pure">       <img src="images/monocoat/pure.jpg"        alt="Pure"        class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'White 5%')"    title="White 5%">   <img src="images/monocoat/white5.jpg"      alt="White 5%"    class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Super White')" title="Super White"><img src="images/monocoat/superwhite.jpg"  alt="Super White" class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Vanilla')"     title="Vanilla">    <img src="images/monocoat/vanilla.jpg"     alt="Vanilla"     class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Castle Brown')" title="Castle Brown"><img src="images/monocoat/castlebrown.jpg" alt="Castle Brown" class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Chocolate')"   title="Chocolate">  <img src="images/monocoat/chocolate.jpg"   alt="Chocolate"   class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Midnight Sky')" title="Midnight Sky"><img src="images/monocoat/midnightsky.jpg" alt="Midnight Sky" class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Black')"       title="Black">      <img src="images/monocoat/black.jpg"       alt="Black"       class="wood-sw-img"></button>
-          <button class="wood-sw"        onclick="pickWood(this,'Green')"       title="Green">      <img src="images/monocoat/fern.jpg"        alt="Green"       class="wood-sw-img"></button>
+          <button class="wood-sw active" onclick="pickWood(this,'Pure')"        title="Pure">       <img src="images/monocoat/pure.jpg"        alt="Pure"        class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'White 5%')"    title="White 5%">   <img src="images/monocoat/white5.jpg"      alt="White 5%"    class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Super White')" title="Super White"><img src="images/monocoat/superwhite.jpg"  alt="Super White" class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Vanilla')"     title="Vanilla">    <img src="images/monocoat/vanilla.jpg"     alt="Vanilla"     class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Castle Brown')" title="Castle Brown"><img src="images/monocoat/castlebrown.jpg" alt="Castle Brown" class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Chocolate')"   title="Chocolate">  <img src="images/monocoat/chocolate.jpg"   alt="Chocolate"   class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Midnight Sky')" title="Midnight Sky"><img src="images/monocoat/midnightsky.jpg" alt="Midnight Sky" class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Black')"       title="Black">      <img src="images/monocoat/black.jpg"       alt="Black"       class="wood-sw-img" loading="lazy" decoding="async"></button>
+          <button class="wood-sw"        onclick="pickWood(this,'Green')"       title="Green">      <img src="images/monocoat/fern.jpg"        alt="Green"       class="wood-sw-img" loading="lazy" decoding="async"></button>
         </div>
       </div>
 
@@ -528,14 +534,14 @@
   <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="about.html" data-en="About Us">درباره ما</a><a href="installments.html" data-en="Installments">فروش اقساطی</a><a href="contact.html" data-en="Contact">تماس</a>
 </aside>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/db.js"></script>
-<script src="assets/site-content.js"></script>
-<script src="assets/main.js?v=3"></script>
-<script src="assets/auth.js"></script>
-<script src="assets/chatbot.js"></script>
-<script src="assets/products.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="assets/supabase-client.js"></script>
+<script defer src="assets/db.js"></script>
+<script defer src="assets/site-content.js"></script>
+<script defer src="assets/main.js?v=3"></script>
+<script defer src="assets/auth.js"></script>
+<script defer src="assets/chatbot.js"></script>
+<script defer src="assets/products.js"></script>
 <script>
   function setMain(t, src){ document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active')); t.classList.add('active'); document.getElementById('mainImg').src = src; }
   function pick(el){ el.parentNode.querySelectorAll('.opt-sw').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
@@ -636,7 +642,7 @@
     const thumbsEl = document.querySelector('.thumbs');
     const mainImg = document.getElementById('mainImg');
     thumbsEl.innerHTML = p.imgs.map((img, i) =>
-      `<div class="thumb${i===0?' active':''}" onclick="setMain(this,'${window.PIRO.resolveImg(img)}')"><img src="${window.PIRO.resolveImg(img)}" class="ph" alt="${p.alts[i]||p.fa}"></div>`
+      `<div class="thumb${i===0?' active':''}" onclick="setMain(this,'${window.PIRO.resolveImg(img)}')"><img src="${window.PIRO.resolveImg(img)}" class="ph" alt="${p.alts[i]||p.fa}" loading="lazy" decoding="async"></div>`
     ).join('');
     mainImg.src = window.PIRO.resolveImg(p.imgs[0]);
     mainImg.alt = p.fa;

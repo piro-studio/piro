@@ -22,7 +22,8 @@ body { background: #1a1a1a; font-family: Tahoma, sans-serif; color: #fff; }
   font-size: 13px; white-space: nowrap; backdrop-filter: blur(4px); }
 .divider { position: absolute; top: 0; right: 50%; width: 2px; height: 100%; background: rgba(255,255,255,.3); z-index: 10; pointer-events: none; }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 <div class="top">
@@ -52,6 +53,6 @@ function applyChange() {
 }
 </script>
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

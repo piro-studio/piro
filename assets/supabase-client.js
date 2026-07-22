@@ -24,7 +24,12 @@ function getSessionId() {
 }
 
 /* ── وضعیت کاربر فعلی ── */
+// getSession() لوکاله (بدون شبکه)؛ فقط وقتی سشنی واقعاً هست سراغ getUser()
+// (که با سرور اعتبارسنجی می‌کنه) می‌ریم — تا بازدیدکننده‌ی مهمان روی هر
+// صفحه یک round-trip شبکه‌ای مفت برای چک کردن auth نداشته باشه.
 async function getCurrentUser() {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return null;
   const { data: { user } } = await db.auth.getUser();
   return user;
 }

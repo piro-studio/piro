@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>کاتالوگ | PIRO</title>
 <meta name="description" content="کاتالوگ‌های خانه پیرو — کاتالوگ جامع محصولات، کالکشن مبل، بروشور و راهنمای رنگ و پارچه.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
 <style>
   .cat-hero { background: var(--bg-warm); padding: clamp(50px,7vw,90px) var(--gut); text-align:center; }
   .cat-hero .crumbs { font-family:var(--font-lat); font-size:12px; letter-spacing:0.08em; color:var(--grey); margin-bottom:18px; }
@@ -190,7 +190,7 @@
 
     <!-- 1: Main catalogue -->
     <article class="catcard reveal">
-      <div class="cover"><img src="images/hero-alto.jpg" alt="کاتالوگ جامع خانه پیرو" loading="lazy"></div>
+      <div class="cover"><img src="images/hero-alto-900.jpg" alt="کاتالوگ جامع خانه پیرو" loading="lazy"></div>
       <div class="body">
         <span class="tag lat">FULL CATALOGUE</span>
         <h3 data-en="Piro Complete Catalogue">کاتالوگ جامع خانه پیرو</h3>
@@ -302,12 +302,12 @@
   <iframe class="viewer-frame" id="viewerFrame" src="" allowfullscreen></iframe>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/db.js"></script>
-<script src="assets/site-content.js"></script>
-<script src="assets/main.js"></script>
-<script src="assets/auth.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="assets/supabase-client.js"></script>
+<script defer src="assets/db.js"></script>
+<script defer src="assets/site-content.js"></script>
+<script defer src="assets/main.js"></script>
+<script defer src="assets/auth.js"></script>
 <script>
 function openViewer(src, title) {
   document.getElementById('viewerTitle').textContent = title;

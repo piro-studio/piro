@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>خانه پیرو | PIRO — مبلمان مینیمال چوب طبیعی</title>
 <meta name="description" content="خانه پیرو — مبلمان مینیمال، هنرمندانه و باکیفیت از چوب طبیعی. طراحی جپندی و اسکاندیناوی برای خانه شما.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
+<link rel="preload" as="image" href="images/hero-alto-1600.jpg" imagesrcset="images/hero-alto-900.jpg 900w, images/hero-alto-1600.jpg 1600w, images/hero-alto-2400.jpg 2400w, images/hero-alto.jpg 3000w" imagesizes="100vw" fetchpriority="high">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 <style>
 
 /* ============================================================
@@ -670,7 +672,7 @@ section + section { margin-top: 48px; }
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <img src="images/hero-alto.jpg" class="hero-img" alt="خانه پیرو — مبلمان مینیمال چوب طبیعی" fetchpriority="high" decoding="async">
+  <img src="images/hero-alto-1600.jpg" srcset="images/hero-alto-900.jpg 900w, images/hero-alto-1600.jpg 1600w, images/hero-alto-2400.jpg 2400w, images/hero-alto.jpg 3000w" sizes="100vw" class="hero-img" alt="خانه پیرو — مبلمان مینیمال چوب طبیعی" fetchpriority="high" decoding="async">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="lat">Where Wood<br>Tells Stories</h1>
@@ -991,12 +993,12 @@ section + section { margin-top: 48px; }
   <a href="shop.html" data-en="Accessories">اکسسوری</a>
 </aside>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/db.js"></script>
-<script src="assets/site-content.js"></script>
-<script src="assets/main.js?v=2"></script>
-<script src="assets/auth.js"></script>
-<script src="assets/chatbot.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="assets/supabase-client.js"></script>
+<script defer src="assets/db.js"></script>
+<script defer src="assets/site-content.js"></script>
+<script defer src="assets/main.js?v=2"></script>
+<script defer src="assets/auth.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

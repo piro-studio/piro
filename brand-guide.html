@@ -435,7 +435,8 @@ footer{background:var(--ink);padding:56px 80px;display:flex;align-items:center;j
   #cover,#manifesto{page-break-after:always}
 }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -1013,6 +1014,6 @@ const obs = new IntersectionObserver(e => {
 secs.forEach(s=>obs.observe(s));
 </script>
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

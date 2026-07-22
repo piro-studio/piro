@@ -7,6 +7,8 @@
 <script>
 // پس از لود صفحه dashboard رو بررسی می‌کنیم (نه redirect)
 </script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/styles.css">
 <style>
@@ -403,7 +405,8 @@ body { background: var(--bg-soft); }
 
 @media (max-width: 600px) { .ocard-header { flex-direction: column; align-items: flex-start; } }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -566,7 +569,7 @@ body { background: var(--bg-soft); }
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.js"></script>
-<script src="assets/auth.js"></script>
+<script defer src="assets/auth.js"></script>
 <script>
 var currentContact = '', isExistingUser = false;
 var currentStep = 1;
@@ -892,6 +895,6 @@ function dashLogout() {
 })();
 </script>
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

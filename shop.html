@@ -1,4 +1,4 @@
-﻿<!-- VERSION-NEW -->
+<!-- VERSION-NEW -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>محصولات | PIRO</title>
 <meta name="description" content="فروشگاه مبلمان خانه پیرو — نشیمن، سرویس خواب، میز، کنسول و اکسسوری از چوب طبیعی.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 <style>
   /* ── Shop Page Title — Carl Hansen style ── */
   .shop-title {
@@ -304,14 +305,14 @@
   <a href="index.html" data-en="Home">خانه</a><a href="shop.html" data-en="Products">محصولات</a><a href="#" data-en="Designers">طراحان</a><a href="catalogue.html" data-en="Catalogue">کاتالوگ</a><a href="about.html" data-en="About Us">درباره ما</a><a href="installments.html" data-en="Installments">فروش اقساطی</a><a href="contact.html" data-en="Contact">تماس</a>
 </aside>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/db.js"></script>
-<script src="assets/site-content.js"></script>
-<script src="assets/main.js?v=2"></script>
-<script src="assets/auth.js"></script>
-<script src="assets/chatbot.js"></script>
-<script src="assets/products.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="assets/supabase-client.js"></script>
+<script defer src="assets/db.js"></script>
+<script defer src="assets/site-content.js"></script>
+<script defer src="assets/main.js?v=2"></script>
+<script defer src="assets/auth.js"></script>
+<script defer src="assets/chatbot.js"></script>
+<script defer src="assets/products.js"></script>
 <script>
   // ===== دسته‌بندی اصلی (fallback — تا بارگذاری از Supabase، جدول categories) =====
   let MAIN_CATS = {

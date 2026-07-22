@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>درباره خانه پیرو | PIRO — ساده، مدرن، مینیمال</title>
 <meta name="description" content="خانه پیرو یک تیم خلاق تولید و طراحی مبلمان با تمرکز بر فرم‌های ارگانیک، مواد باکیفیت و طراحی مینیمال است.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 <style>
   /* ===== ABOUT PAGE ===== */
 
@@ -292,7 +293,7 @@
 
 <!-- ===== CINEMATIC HERO ===== -->
 <section class="ab-hero">
-  <img class="fallback" src="images/hero-alto.jpg" alt="خانه پیرو" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  <img class="fallback" src="images/hero-alto-1600.jpg" srcset="images/hero-alto-900.jpg 900w, images/hero-alto-1600.jpg 1600w, images/hero-alto-2400.jpg 2400w, images/hero-alto.jpg 3000w" sizes="100vw" alt="خانه پیرو" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
   <div class="ab-hero-overlay"></div>
   <div class="ab-hero-content">
     <span class="eyebrow" data-en="About PIRO" id="pgHeroEyebrow">درباره خانه پیرو</span>
@@ -500,13 +501,13 @@
   <a href="contact.html" data-en="Contact">تماس</a>
 </aside>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/db.js"></script>
-<script src="assets/site-content.js"></script>
-<script src="assets/page-content.js"></script>
-<script src="assets/main.js"></script>
-<script src="assets/auth.js"></script>
-<script src="assets/chatbot.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="assets/supabase-client.js"></script>
+<script defer src="assets/db.js"></script>
+<script defer src="assets/site-content.js"></script>
+<script defer src="assets/page-content.js"></script>
+<script defer src="assets/main.js"></script>
+<script defer src="assets/auth.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

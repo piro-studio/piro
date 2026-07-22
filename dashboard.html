@@ -12,9 +12,7 @@
   location.replace('account.html');
 })();
 </script>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
 <style>
 .dash-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100svh - 76px)}
 .dash-sidebar{background:var(--bg-soft);border-left:1px solid var(--line);padding:32px 0}
@@ -93,7 +91,8 @@
 }
 @media(max-width:500px){.stat-row{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -383,8 +382,8 @@
   </div>
 </footer>
 
-<script src="assets/main.js"></script>
-<script src="assets/auth.js"></script>
+<script defer src="assets/main.js"></script>
+<script defer src="assets/auth.js"></script>
 <script>
 var user=PiroAuth.current();
 
@@ -484,6 +483,6 @@ function doLogout(){
 }
 </script>
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

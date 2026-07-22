@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تکمیل سفارش | PIRO</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://oebexlccwcidcwandxpx.supabase.co" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/styles.css">
 <style>
   .page-title {
     max-width: var(--maxw); margin: 0 auto;
@@ -136,7 +136,8 @@
   @media (max-width: 900px) { .checkout-wrap { grid-template-columns: 1fr; gap: 40px; } .cart-summary { position: static; } }
   @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -352,7 +353,7 @@
 </aside>
 
 <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.js"></script>
-<script src="assets/main.js?v=3"></script>
+<script defer src="assets/main.js?v=3"></script>
 <script>
 const ADMIN_CODE = 'PIRO-ADMIN-2024';
 const SHIPPING_COST = 500000;
@@ -608,6 +609,6 @@ if (saved) {
 }
 </script>
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>

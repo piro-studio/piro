@@ -187,7 +187,8 @@ body { background:#EDEBE6; font-family:'Jost',sans-serif; }
 .logo-kraft .logo-rule-thick      { background:#2E1E12; }
 .logo-kraft .logo-rule-thin       { background:rgba(46,30,18,.25); }
 </style>
-<link rel="stylesheet" href="assets/chatbot.css">
+<link rel="preload" as="style" href="assets/chatbot.css" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/chatbot.css"></noscript>
 </head>
 <body>
 
@@ -432,6 +433,6 @@ body { background:#EDEBE6; font-family:'Jost',sans-serif; }
 </div>
 
 
-<script src="assets/chatbot.js"></script>
+<script defer src="assets/chatbot.js"></script>
 </body>
 </html>
