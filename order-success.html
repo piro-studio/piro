@@ -326,7 +326,11 @@ function init() {
     </div>`;
 }
 
-init();
+// تا DOMContentLoaded عقب افتاد — init() از getCart() در assets/main.js
+// استفاده می‌کنه که الان defer شده و دیرتر از این اسکریپت این‌لاین اجرا
+// می‌شه؛ فراخوانی فوری قبلی با ارور «getCart is not defined» کل صفحه‌ی
+// تأیید سفارش رو می‌شکست.
+document.addEventListener('DOMContentLoaded', init);
 </script>
 
 <script defer src="assets/chatbot.js"></script>

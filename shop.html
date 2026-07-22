@@ -314,6 +314,13 @@
 <script defer src="assets/chatbot.js"></script>
 <script defer src="assets/products.js"></script>
 <script>
+// این کل اسکریپت را تا رویداد DOMContentLoaded عقب می‌اندازد — چون به
+// PIRO_PRODUCTS (از assets/products.js) و window.PIRO (از supabase-client.js/
+// db.js) نیاز داره که همه‌شون الان defer شدن و دیرتر از این اسکریپت این‌لاین
+// اجرا می‌شن؛ بدون این wrap، خط بعدی همین‌جا (PIRO_PRODUCTS.slice()) با ارور
+// «PIRO_PRODUCTS is not defined» کل اسکریپت رو از همون اول می‌شکست و گرید
+// محصولات همیشه خالی می‌موند.
+document.addEventListener('DOMContentLoaded', function () {
   // ===== دسته‌بندی اصلی (fallback — تا بارگذاری از Supabase، جدول categories) =====
   let MAIN_CATS = {
     '':      {fa:'همه',             en:'All'},
@@ -528,6 +535,7 @@
   renderGrid();
   loadProductsFromDB();
   loadCategoriesFromDB();
+});
 </script>
 </body>
 </html>

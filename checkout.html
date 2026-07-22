@@ -581,6 +581,12 @@ document.getElementById('checkoutForm').addEventListener('submit', e => {
   location.href = 'payment.html';
 });
 
+// این بخش تا DOMContentLoaded عقب می‌افته — چون renderSummary() از تابع
+// getCart() در assets/main.js استفاده می‌کنه که الان defer شده و دیرتر از
+// این اسکریپت این‌لاین اجرا می‌شه؛ بدون این wrap، خط renderSummary(null)
+// با ارور «getCart is not defined» کل بخش «Init» رو (شامل بازیابی مقادیر
+// ذخیره‌شده‌ی فرم) می‌شکست.
+document.addEventListener('DOMContentLoaded', function () {
 // ── Init ──
 updateDeliveryDate();
 renderSummary(null);
@@ -607,6 +613,7 @@ if (saved) {
     }
   } catch(e) {}
 }
+}); // end DOMContentLoaded
 </script>
 
 <script defer src="assets/chatbot.js"></script>

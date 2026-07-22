@@ -554,6 +554,14 @@
   function toFa(n){ return String(n).split('').map(d=>fa[d]||d).join(''); }
   function qd(d){ q=Math.max(1,q+d); document.getElementById('qv').textContent=toFa(q); }
 
+  // این بخش تا DOMContentLoaded عقب می‌افته — چون به PIRO_PRODUCTS (از
+  // assets/products.js) و window.PIRO (از supabase-client.js/db.js) نیاز
+  // داره که همه‌شون defer شدن و دیرتر از این اسکریپت این‌لاین اجرا می‌شن؛
+  // بدون این wrap، خط بعدی (PIRO_PRODUCTS.map) با ارور «PIRO_PRODUCTS is
+  // not defined» کل بارگذاری محصول رو می‌شکست. توابعی که با onclick صدا زده
+  // می‌شن (setMain/pick/pickSize/pickWood/qd/addCart) عمداً بیرون این wrap
+  // موندن چون باید همیشه سراسری (global) بمونن.
+  document.addEventListener('DOMContentLoaded', function () {
   // ===== Dynamic product loader =====
   const PRODUCTS = Object.fromEntries(PIRO_PRODUCTS.map(p => [p.id, p]));
 
@@ -706,6 +714,7 @@
     // ذخیره داده محصول برای addCart
     window._currentProduct = { id: id || 'alto', data: p };
   })();
+  }); // end DOMContentLoaded
 
   // ===== override addCart برای صفحه محصول =====
   function addCart(ev) {

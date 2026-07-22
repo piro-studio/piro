@@ -385,6 +385,13 @@
 <script defer src="assets/main.js"></script>
 <script defer src="assets/auth.js"></script>
 <script>
+// این بخش تا DOMContentLoaded عقب می‌افته — چون PiroAuth از assets/auth.js
+// میاد که الان defer شده و دیرتر از این اسکریپت این‌لاین اجرا می‌شه؛ بدون
+// این wrap، خط بعدی با ارور «PiroAuth is not defined» اجرا نمی‌شد و پروفایل/
+// سفارش‌ها/علاقه‌مندی‌ها/آدرس‌های کاربر هیچ‌وقت پر نمی‌شدن. توابعی که با
+// onclick صدا زده می‌شن (showPanel/saveProfile/...) عمداً بیرون این wrap
+// موندن چون باید همیشه سراسری (global) بمونن.
+document.addEventListener('DOMContentLoaded', function () {
 var user=PiroAuth.current();
 
 if(user){
@@ -435,6 +442,7 @@ if(user){
     });
   }
 }
+}); // end DOMContentLoaded
 
 function showPanel(name,el){
   event.preventDefault();
