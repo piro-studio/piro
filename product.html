@@ -22,6 +22,12 @@
   .crumbs a:hover { color:var(--burgundy); }
   .pd-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:clamp(30px,5vw,72px); align-items:start; }
 
+  /* حالت بارگذاری — تا رسیدن داده واقعی محصول از دیتابیس، محتوای placeholder (آلتو) مخفی می‌ماند */
+  .pd-wrap.loading > .crumbs, .pd-wrap.loading .pd-grid { visibility:hidden; }
+  .pd-loader { visibility:hidden; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:30px; height:30px; border:2px solid var(--line); border-top-color:var(--ink); border-radius:50%; animation:pdSpin 0.8s linear infinite; }
+  .pd-wrap.loading .pd-loader { visibility:visible; }
+  @keyframes pdSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+
   /* Gallery */
   .gallery { display:grid; grid-template-columns:84px 1fr; gap:16px; }
   @media (min-width:900px) { .gallery { position:sticky; top:96px; } }
@@ -322,7 +328,7 @@
   </div>
 </header>
 
-<div class="pd-wrap">
+<div class="pd-wrap loading" id="pdWrap">
   <div class="crumbs lat"><a href="index.html" data-en="Home">خانه</a> / <a href="shop.html" data-en="Products">محصولات</a> / <span data-en="Tables">میز</span> / <span data-en="Alto Bar Table">میز بار آلتو</span></div>
 
   <div class="pd-grid">
@@ -336,6 +342,7 @@
       </div>
       <div class="main-img">
         <img src="images/alto-1.jpg" class="ph" id="mainImg" alt="میز بار آلتو">
+        <div class="pd-loader"></div>
       </div>
     </div>
 
@@ -605,6 +612,7 @@
     if (!p) {
       const wrap = document.querySelector('.pd-wrap');
       if (wrap) {
+        wrap.classList.remove('loading');
         wrap.innerHTML = `<p class="empty-state" data-en="Product not found.">محصول مورد نظر یافت نشد.</p>
           <p class="empty-state" style="padding-top:0;"><a href="shop.html" data-en="Back to Shop →" style="color:var(--burgundy);">بازگشت به فروشگاه ←</a></p>`;
       }
@@ -713,6 +721,9 @@
 
     // ذخیره داده محصول برای addCart
     window._currentProduct = { id: id || 'alto', data: p };
+
+    // نمایش محتوا پس از آماده‌شدن داده واقعی محصول
+    document.getElementById('pdWrap')?.classList.remove('loading');
   })();
   }); // end DOMContentLoaded
 
