@@ -416,6 +416,18 @@ document.addEventListener('DOMContentLoaded', function () {
   let activeCat = params.get('cat') || '';
   let activeSub = params.get('sub') || '';
 
+  // آدرس URL را با فیلتر فعلی هماهنگ می‌کند — بدون این، کلیک روی تب‌ها فقط
+  // ظاهر صفحه را عوض می‌کرد و URL آدرس‌بار همان مقدار بارگذاری اولیه می‌ماند؛
+  // در نتیجه دکمه Back مرورگر (بعد از رفتن به صفحه محصول) کاربر را به همان
+  // فیلتر اولیه برمی‌گرداند، نه فیلتری که واقعاً هنگام کلیک روی محصول باز بود.
+  function syncUrl() {
+    const p = new URLSearchParams();
+    if (activeCat) p.set('cat', activeCat);
+    if (activeSub) p.set('sub', activeSub);
+    const qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+  }
+
   // ===== Main tabs =====
   const tabs = document.querySelectorAll('.cat-tab');
   tabs.forEach(tab => {
@@ -427,6 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       buildSubNav(activeCat);
+      syncUrl();
       renderGrid();
     });
   });
@@ -448,6 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
         activeSub = t.dataset.sub;
         subNavInner.querySelectorAll('.sub-tab').forEach(x=>x.classList.remove('active'));
         t.classList.add('active');
+        syncUrl();
         renderGrid();
       });
     });
